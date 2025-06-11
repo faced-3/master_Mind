@@ -4,6 +4,7 @@
 # v1.01
 # 15-8-2024
 # Last mod by DevJan : added loop for replay
+
 print("MasterMind")
 
 import random
@@ -28,7 +29,7 @@ def get_Feedback(secret, guess):
     return black_Pegs, white_Pegs
 
 def show_Secret(mystery):
-    print(mystery)
+    print("Secret code (cheat mode):", ''.join(mystery))
 
 def play_Mastermind():
     print("Welcome to Mastermind!")
@@ -37,14 +38,21 @@ def play_Mastermind():
     attempts = 10
 
     for attempt in range(1, attempts + 1):
-        guess = ""
         valid_Guess = False
         while not valid_Guess:
             guess = input(f"Attempt {attempt}: ").strip()
+            
+            if guess.lower() == "cheat":
+                password = input("Enter password: ").strip()
+                if password == "hoi":
+                    show_Secret(secret_Code)
+                else:
+                    print("Wrong password.")
+                continue  # go back to asking for a guess
+
             valid_Guess = len(guess) == 4 and all(c in "123456" for c in guess)
             if not valid_Guess:
                 print("Invalid input. Enter 4 digits, each from 1 to 6.")
-            show_Secret(secret_Code) if guess == "cheat" else False
 
         black, white = get_Feedback(secret_Code, guess)
         print(f"Black pegs (correct position): {black}, White pegs (wrong position): {white}")
@@ -57,7 +65,6 @@ def play_Mastermind():
 
 if __name__ == "__main__":
     again = 'Y'
-    while again == 'Y' :
+    while again == 'Y':
         play_Mastermind()
-        again  = input (f"Play again (Y/N) ?").upper()
-
+        again = input("Play again (Y/N)? ").strip().upper()
